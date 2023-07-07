@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  studentdb:
+    container_name: studentcontainer
+    ports:
+      - "6379:6379"
+    restart: always
+  interview.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RedisCache:ConnectionString=studentcontainer:6379
+    ports:
+      - "8000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  interview1.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8001:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

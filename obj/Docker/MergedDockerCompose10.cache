@@ -1,0 +1,35 @@
+services:
+  interview.api:
+    build:
+      context: C:\Learnings\Interview.API
+      dockerfile: Interview.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    image: interviewapi
+    ports:
+    - published: 8000
+      target: 80
+    volumes:
+    - C:\Users\SESA645731\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\SESA645731\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  interview1.api:
+    build:
+      context: C:\Learnings\Interview.API
+      dockerfile: Interview1.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    image: interview1api
+    ports:
+    - published: 8001
+      target: 80
+    volumes:
+    - C:\Users\SESA645731\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\SESA645731\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  studentdb:
+    container_name: studentcontainer
+    image: redis:alpine
+    ports:
+    - published: 6379
+      target: 6379
+    restart: always
+version: '3.4'

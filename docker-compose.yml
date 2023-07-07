@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  studentdb:
+    image: redis:alpine
+  interview.api:
+    image: ${DOCKER_REGISTRY-}interviewapi
+    build:
+      context: .
+      dockerfile: Interview.API/Dockerfile
+
+  interview1.api:
+    image: ${DOCKER_REGISTRY-}interview1api
+    build:
+      context: .
+      dockerfile: Interview1.API/Dockerfile
+

@@ -1,0 +1,82 @@
+services:
+  interview.api:
+    build:
+      context: C:\Learnings\Interview.API
+      dockerfile: Interview.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Interview.API
+      target: base
+    container_name: Interview.API
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+      RedisCache:ConnectionString: studentcontainer:6379
+    image: interviewapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "/app/bin/Debug/net6.0/Interview.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 8000
+      target: 80
+    tty: true
+    volumes:
+    - C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\TokenService.Proxy\linux-x64\net6.0:/TokenService.Proxy:ro
+    - C:\Learnings\Interview.API\Interview.API:/app:rw
+    - C:\Users\SESA645731\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\SESA645731\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\SESA645731\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\SESA645731\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Learnings\Interview.API:/src:rw
+  interview1.api:
+    build:
+      context: C:\Learnings\Interview.API
+      dockerfile: Interview1.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Interview1.API
+      target: base
+    container_name: Interview1.API
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: interview1api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "/app/bin/Debug/net6.0/Interview1.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 8001
+      target: 80
+    tty: true
+    volumes:
+    - C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\TokenService.Proxy\linux-x64\net6.0:/TokenService.Proxy:ro
+    - C:\Learnings\Interview.API\Interview1.API:/app:rw
+    - C:\Users\SESA645731\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\SESA645731\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\SESA645731\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\SESA645731\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Learnings\Interview.API:/src:rw
+  studentdb:
+    container_name: studentcontainer
+    image: redis:alpine
+    ports:
+    - published: 6379
+      target: 6379
+    restart: always
+version: '3.4'
